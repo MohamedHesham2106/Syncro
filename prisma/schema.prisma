@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             String             @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String             @unique
+  externalId     String             @unique
+  imageUrl       String
+  
+
+  ownedProjects  Project[]          @relation(name: "ProjectOwner")
+  assignedProjects ProjectAssignment[]
+  assignedTasks  Task[]
+
+}
+
+model Project {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  targetDate  DateTime
+  description String
+  ownerId     String       @db.ObjectId
+
+  // Index for efficient search by ownerId and targetDate
+  @@index([ownerId])
+  @@index([targetDate])
+
+  owner       User         @relation(name: "ProjectOwner", fields: [ownerId], references: [id])
+  assignedUsers ProjectAssignment[]
+  sections    Section[]
+}
+
+model ProjectAssignment {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  projectId String @db.ObjectId
+
+  user      User    @relation(fields: [userId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, projectId])
+}
+
+model Section {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  projectId String      @db.ObjectId
+  dueDate   DateTime
+  type      SectionType
+
+ // Index for filtering by projectId and dueDate
+  @@index([projectId])
+  @@index([dueDate])
+
+  project   Project     @relation(fields: [projectId], references: [id])
+  tasks     Task[]
+}
+
+model Task {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description    String
+  dueDate        DateTime
+  assignedUserId String   @db.ObjectId
+  sectionId      String   @db.ObjectId
+  
+  // Index for searching by assignedUserId and dueDate
+  @@index([assignedUserId])
+  @@index([dueDate])
+
+  assignedUser   User     @relation(fields: [assignedUserId], references: [id])
+  section        Section  @relation(fields: [sectionId], references: [id])
+}
+
+enum SectionType {
+  PRD
+  UI_DESIGN
+  Technical_Design
+  Development
+  QA
+  Release
+}
