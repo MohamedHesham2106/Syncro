@@ -33,11 +33,14 @@ export const ProjectCard = ({ project }: TProps) => {
 
   return (
     <Link
-      href={`/project/${project.id}`}
+      href={{
+        pathname: `/projects/${project.id}`,
+        query: { tab: "planner" },
+      }}
       className="flex flex-col border-2 border-slate-200 rounded-xl p-5 border-b-4 border-b-slate-300 hover:shadow-md transition-all w-full space-y-4"
     >
       <div className="flex items-center justify-between">
-        <h1 className="font-extrabold tracking-wide text-lg capitalize">
+        <h1 className="font-extrabold tracking-wide text-xl capitalize">
           {project.name}
         </h1>
         {overdue ? (

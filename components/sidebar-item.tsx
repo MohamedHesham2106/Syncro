@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import Link from "next/link";
 
 type TProps = {
   label: string;
@@ -33,9 +34,11 @@ export const SidebarItem: FC<TProps> = ({ href, icon, label }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={isActive ? "primary" : "ghost"} size="icon">
-            <IconComponent className="w-5 h-5 cursor-pointer " />
-          </Button>
+          <Link href={href}>
+            <Button variant={isActive ? "primary" : "ghost"} size="icon">
+              <IconComponent className="w-5 h-5 cursor-pointer " />
+            </Button>
+          </Link>
         </TooltipTrigger>
         <TooltipContent side="right">
           <span>{label}</span>

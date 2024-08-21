@@ -1,8 +1,11 @@
-import { addProject, getProjects } from "@/services/project.service";
+import {
+  addProject,
+  getProject,
+  getProjects,
+} from "@/services/project.service";
 import { privateProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
 
 export const appRouter = router({
   addProject: privateProcedure
@@ -34,9 +37,25 @@ export const appRouter = router({
         message: "Could not fetch projects",
       });
     }
-    revalidatePath("/projects");
     return projects;
   }),
+  getProject: privateProcedure
+    .input(
+      z.object({
+        projectId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const { projectId } = input;
+      const project = await getProject(projectId);
+      if (!project) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Could not fetch project",
+        });
+      }
+      return project;
+    }),
 });
 
 export type AppRouter = typeof appRouter;

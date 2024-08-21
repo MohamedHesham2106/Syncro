@@ -22,8 +22,9 @@ export const Header = ({ className }: TProps) => {
       <div className="lg:max-w-screen-xl mx-auto flex items-center justify-between h-full">
         <div className="py-7 pl-4 p flex items-center gap-x-3">
           <Link href="/">
-            <h1 className="text-2xl font-extrabold text-black tracking-wide">
-              <span className="text-indigo-500 text-3xl">S</span>yncro
+            <h1 className="text-2xl font-bold text-black tracking-wide">
+              <span className="text-indigo-500 text-3xl font-extrabold">S</span>
+              yncro
             </h1>
           </Link>
         </div>

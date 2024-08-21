@@ -87,7 +87,7 @@ export const ProjectModal = () => {
           <Plus className="w-5 h-5 font-extrabold" /> Add Project
         </Button>
       </DialogTrigger>
-      <DialogContent className="md:max-w-2xl max-w-xs">
+      <DialogContent className="max-w-sm md:max-w-2xl sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="font-extrabold text-2xl">
             Add Project
