@@ -4,10 +4,21 @@ import { SectionType } from "@prisma/client";
 
 import { add, differenceInDays } from "date-fns";
 
-export async function addProject({ name, description, targetedDate }: Project) {
+export async function addProject({
+  name,
+  description,
+  targetDate,
+}: {
+  name: string;
+  description: string;
+  targetDate: string;
+}) {
   try {
     const self = await getSelf();
     if (!self) throw new Error("Unauthorized");
+
+    if (!name || !description || !targetDate)
+      throw new Error("Invalid input data");
 
     // Find the user in the database
     const user = await db.user.findUnique({
@@ -18,7 +29,7 @@ export async function addProject({ name, description, targetedDate }: Project) {
 
     // Calculate the total project duration
     const startDate = new Date();
-    const totalDays = differenceInDays(new Date(targetedDate), startDate);
+    const totalDays = differenceInDays(new Date(targetDate), startDate);
 
     // Distribute time across sections
     const timeline = {
@@ -52,7 +63,7 @@ export async function addProject({ name, description, targetedDate }: Project) {
           timeline.Development +
           timeline.QA,
       }),
-      Release: new Date(targetedDate), // Release is on the final targeted date
+      Release: new Date(targetDate), // Release is on the final targeted date
     };
 
     // Create the new project along with all sections
@@ -60,7 +71,7 @@ export async function addProject({ name, description, targetedDate }: Project) {
       data: {
         name,
         description,
-        targetDate: new Date(targetedDate),
+        targetDate: new Date(targetDate),
         owner: {
           connect: {
             id: user.id,
@@ -175,6 +186,7 @@ export async function getProjects() {
 export async function getProject(projectId: string) {
   const self = await getSelf();
   if (!self) throw new Error("Unauthorized");
+  if (!projectId) throw new Error("Invalid project ID");
 
   // Find the user in the database
   const user = await db.user.findUnique({

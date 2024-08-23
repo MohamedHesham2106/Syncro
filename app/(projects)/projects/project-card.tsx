@@ -1,6 +1,5 @@
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Project } from "@prisma/client";
 import { format, isPast } from "date-fns"; // Import isPast to check the date
 import { Calendar } from "lucide-react";
 import Image from "next/image";
@@ -8,14 +7,12 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge"; // Import a Badge component or create one
 
 type TProps = {
-  project: Project & {
-    owner: {
-      name: string;
-      email: string;
-      imageUrl: string;
-    };
-    isOwner: boolean;
-  };
+  project: Omit<
+    Project & {
+      isOwner: boolean;
+    },
+    "sections"
+  >;
 };
 
 const truncateText = (text: string, maxLength: number) => {

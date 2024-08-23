@@ -5,12 +5,13 @@ import { FC } from "react";
 
 import { SidebarItem } from "@/components/sidebar-item";
 import { Separator } from "./ui/separator";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 type TProps = {
   className?: string;
 };
 export const Sidebar: FC<TProps> = ({ className }) => {
   const { projectId } = useParams();
+  const pathname = usePathname();
 
   return (
     <div
@@ -29,6 +30,17 @@ export const Sidebar: FC<TProps> = ({ className }) => {
               label="Projects"
               icon="grid"
               href={`/projects/${projectId}`}
+            />
+          </>
+        )}
+        {pathname === `/projects/${projectId}/prd` && (
+          <>
+            <Separator className="my-2 bg-slate-300" />
+
+            <SidebarItem
+              label="PRD"
+              icon="paper"
+              href={`/projects/${projectId}/prd`}
             />
           </>
         )}

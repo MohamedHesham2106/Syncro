@@ -1,5 +1,5 @@
 "use client";
-import { useTriggerModal } from "@/hooks/use-trigger-modal";
+import { ModalType, useTriggerModal } from "@/hooks/use-trigger-modal";
 import Image from "next/image";
 export const ProjectPlaceholder = () => {
   const { open } = useTriggerModal();
@@ -18,7 +18,10 @@ export const ProjectPlaceholder = () => {
         </h1>
         <p>
           Please start by{" "}
-          <button className="text-primary cursor-pointer" onClick={open}>
+          <button
+            className="text-primary cursor-pointer"
+            onClick={() => open(ModalType.AddProject)}
+          >
             Adding a Project
           </button>{" "}
           to experience the magic of Syncro&#x21;

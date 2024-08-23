@@ -19,6 +19,5 @@ export const useProject = () => {
   } = trpc.getProjects.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
-
   return { addProject, projects, isLoading, isRefetching };
 };

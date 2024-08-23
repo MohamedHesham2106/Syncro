@@ -3,7 +3,7 @@
 import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
-import { Home, LayoutGrid } from "lucide-react";
+import { Home, LayoutGrid, Notebook } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -14,13 +14,14 @@ import Link from "next/link";
 
 type TProps = {
   label: string;
-  icon: "grid" | "home";
+  icon: "grid" | "home" | "paper";
   href: string;
 };
 
 const iconMap = {
   grid: LayoutGrid,
   home: Home,
+  paper: Notebook,
 };
 
 export const SidebarItem: FC<TProps> = ({ href, icon, label }) => {

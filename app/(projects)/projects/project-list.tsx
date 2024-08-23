@@ -3,13 +3,13 @@ import { useProject } from "@/hooks/use-project";
 import { ProjectCard, ProjectCardSkeleton } from "./project-card";
 import { ProjectPlaceholder } from "./project-placeholder";
 import { cn } from "@/lib/utils";
-import {  Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export const ProjectsList = () => {
   const { projects, isLoading, isRefetching } = useProject();
   if (isLoading && !isRefetching)
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
         {[...Array(4)].map((_, i) => (
           <ProjectCardSkeleton key={i} />
         ))}
@@ -36,10 +36,7 @@ export const ProjectsList = () => {
     >
       {projects && projects.length !== 0 ? (
         projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={{ ...project, targetDate: new Date(project.targetDate) }}
-          />
+          <ProjectCard key={project.id} project={project} />
         ))
       ) : (
         <ProjectPlaceholder />

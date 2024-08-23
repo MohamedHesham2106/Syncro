@@ -70,7 +70,7 @@ export const ProjectModal = () => {
   };
 
   const { isOpen, type, close, open } = useTriggerModal();
-  const openModal = isOpen && type === ModalType.ADDProject;
+  const openModal = isOpen && type === ModalType.AddProject;
 
   return (
     <Dialog
@@ -79,7 +79,7 @@ export const ProjectModal = () => {
         if (!open) close();
       }}
     >
-      <DialogTrigger asChild onClick={open}>
+      <DialogTrigger asChild onClick={() => open(ModalType.AddProject)}>
         <Button
           variant="primary"
           className="w-full lg:w-1/5 font-bold flex items-center justify-center gap-x-1"
